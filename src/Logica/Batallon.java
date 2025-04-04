@@ -6,29 +6,23 @@ import Modelos.EstadoOperativo;
 import Modelos.Mision;
 import Modelos.TransporteTropas;
 import Modelos.VehiculoBlindado;
-import Modelos.VheiculoDeApoyo;
+import Modelos.VehiculoDeApoyo;
 
 public class Batallon {
 	private String nombre;
-	private ArrayList<Vehiculo> vehiculos=new ArrayList<Vehiculo>();
+	private ArrayList<VehiculoBlindado> vehiculosBlindados=new ArrayList<VehiculoBlindado>();
+	private ArrayList<VehiculoDeApoyo> vehiculosDeApoyo= new ArrayList<VehiculoDeApoyo>();
+	private ArrayList<TransporteTropas> vehiculoDeTropas= new ArrayList<TransporteTropas>();
 	private ArrayList<Mision> misiones=new ArrayList<Mision>();
-	public Batallon(String nombre, ArrayList<Vehiculo> vehiculos, ArrayList<Mision> misiones) {
+	public Batallon(String nombre) {
 		super();
 		this.nombre = nombre;
-		this.vehiculos = vehiculos;
-		this.misiones = misiones;
 	}
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	public ArrayList<Vehiculo> getVehiculos() {
-		return vehiculos;
-	}
-	public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
-		this.vehiculos = vehiculos;
 	}
 	public ArrayList<Mision> getMisiones() {
 		return misiones;
@@ -37,18 +31,48 @@ public class Batallon {
 		this.misiones = misiones;
 	}
 //METODOS DE VEHICULOS//
-	public boolean existeVehiculo(String id) {
-		for(Vehiculo v:this.vehiculos) {
+	public boolean existeVehiculoBlindado(String id) {
+		for(VehiculoBlindado v:this.vehiculosBlindados) {
 			if(v.getId().equals(id)) {
 				return true;
 			}
 		}return false;
 	}
-	public boolean agregarVehiculo(Vehiculo v) {
-		boolean estado =existeVehiculo(v.getId());
+	public boolean agregarVehiculoBlindado(VehiculoBlindado v) {
+		boolean estado =existeVehiculoBlindado(v.getId());
 		if(estado != true) {
-			this.vehiculos.add(v);
+			this.vehiculosBlindados.add(v);
 			return true;
 		}return false;
 	}
+	public VehiculoBlindado buscarVehiculoBlindado(String id) {
+		for(VehiculoBlindado v:vehiculosBlindados) {
+			if(v.getId().equals(id)) {
+				return v;
+			}
+		}return null;
+	}
+	public boolean eliminarVehiculoBlindado(String id) {
+		 VehiculoBlindado v =buscarVehiculoBlindado(id);
+		if(v != null) {
+			this.vehiculosBlindados.remove(v);
+			return true;
+		}return false;
+	}
+//METODOS DE VEHICULO DE APOYO//
+	public boolean existeVehiculoDeApoyo(String id) {
+		for(VehiculoDeApoyo v:this.vehiculosDeApoyo) {
+			if(v.getId().equals(id)) {
+				return true;
+			}
+		}return false;
+	}
+	public boolean agregarVehiculoDeApoyo(Vehiculo v) {
+		boolean estado =existeVehiculoBlindado(v.getId());
+		if(estado != true) {
+			this.vehiculosBlindados.add(v);
+			return true;
+		}return false;
+	}
+	
 }

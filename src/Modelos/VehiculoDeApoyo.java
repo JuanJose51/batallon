@@ -1,9 +1,9 @@
 package Modelos;
 
-public class VheiculoDeApoyo extends Vehiculo {
+public class VehiculoDeApoyo extends Vehiculo {
 	protected String tipoVehiculo;
 
-	public VheiculoDeApoyo(String id, String modelo, String yearFabricacion, int kilometraje, String estadoOperativo,String tipoVehiculo) {
+	public VehiculoDeApoyo(String id, String modelo, String yearFabricacion, int kilometraje, String estadoOperativo,String tipoVehiculo) {
 		super(id, modelo, yearFabricacion, kilometraje, estadoOperativo);
 		this.tipoVehiculo=tipoVehiculo;
 	}

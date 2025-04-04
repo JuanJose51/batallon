@@ -1,11 +1,20 @@
 package Modelos;
 
+import java.util.ArrayList;
+
 public abstract class Vehiculo {
 	protected String id;
 	protected String modelo;
 	protected String yearFabricacion;
 	protected int kilometraje;
 	protected String estadoOperativo;
+	protected ArrayList<Mision> misiones=new ArrayList<Mision>();
+	public ArrayList<Mision> getMisiones() {
+		return misiones;
+	}
+	public void setMisiones(ArrayList<Mision> misiones) {
+		this.misiones = misiones;
+	}
 	public Vehiculo(String id, String modelo, String yearFabricacion, int kilometraje, String estadoOperativo) {
 		super();
 		this.id = id;

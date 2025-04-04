@@ -15,6 +15,14 @@ public class VehiculoBlindado extends Vehiculo {
 	public void setNivelBlindaje(String nivelBlindaje) {
 		this.nivelBlindaje = nivelBlindaje;
 	}
+
+	@Override
+	public String toString() {
+		return "VehiculoBlindado [nivelBlindaje=" + nivelBlindaje + ", id=" + id + ", modelo=" + modelo
+				+ ", yearFabricacion=" + yearFabricacion + ", kilometraje=" + kilometraje + ", estadoOperativo="
+				+ estadoOperativo + ", misiones=" + misiones + "]";
+	}
+	
 	
 	
 
