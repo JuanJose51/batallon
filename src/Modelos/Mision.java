@@ -4,24 +4,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Mision {
-	private static int idMision=1;
+	private  int idMision;
 	private LocalDate fecha;
 	private String ubicacion;
 	private ArrayList<String> personal=new ArrayList<String>();
-	private int idVehiculo;
-	public Mision(LocalDate fecha, String ubicacion, ArrayList<String> personal,int idVehiculo) {
+	private String idVehiculo;
+	public Mision(LocalDate fecha, String ubicacion, ArrayList<String> personal,String idVehiculo,int idMision) {
 		super();
 		this.fecha = fecha;
 		this.ubicacion = ubicacion;
 		this.personal = personal;
 		this.idVehiculo = idVehiculo;
-		this.idMision++;
+		this.idMision= idMision;
 	}
-	public static int getIdMision() {
+	public int getIdMision() {
 		return idMision;
 	}
-	public static void setIdMision(int idMision) {
-		Mision.idMision = idMision;
+	public void setIdMision(int idMision) {
+		this.idMision = idMision;
 	}
 	public LocalDate getFecha() {
 		return fecha;
@@ -42,10 +42,10 @@ public class Mision {
 		this.personal = personal;
 	}
 
-	public int getIdVehiculo() {
+	public String getIdVehiculo() {
 		return idVehiculo;
 	}
-	public void setIdVehiculo(int idVehiculo) {
+	public void setIdVehiculo(String idVehiculo) {
 		this.idVehiculo = idVehiculo;
 	}
 	@Override

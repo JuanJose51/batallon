@@ -7,7 +7,7 @@ public abstract class Vehiculo {
 	protected String modelo;
 	protected String yearFabricacion;
 	protected int kilometraje;
-	protected String estadoOperativo;
+	protected EstadoOperativo estadoOperativo;
 	protected ArrayList<Mision> misiones=new ArrayList<Mision>();
 	public ArrayList<Mision> getMisiones() {
 		return misiones;
@@ -15,7 +15,7 @@ public abstract class Vehiculo {
 	public void setMisiones(ArrayList<Mision> misiones) {
 		this.misiones = misiones;
 	}
-	public Vehiculo(String id, String modelo, String yearFabricacion, int kilometraje, String estadoOperativo) {
+	public Vehiculo(String id, String modelo, String yearFabricacion, int kilometraje, EstadoOperativo estadoOperativo) {
 		super();
 		this.id = id;
 		this.modelo = modelo;
@@ -47,11 +47,21 @@ public abstract class Vehiculo {
 	public void setKilometraje(int kilometraje) {
 		this.kilometraje = kilometraje;
 	}
-	public String getEstadoOperativo() {
+	public void agregarMisionVehiculo(Mision m) {
+		this.misiones.add(m);
+	}
+	public EstadoOperativo getEstadoOperativo() {
 		return estadoOperativo;
 	}
-	public void setEstadoOperativo(String estadoOperativo) {
+	public void setEstadoOperativo(EstadoOperativo estadoOperativo) {
 		this.estadoOperativo = estadoOperativo;
+	}
+	public void eliminarMisionVehiculo(int id) {
+		for(Mision m:this.misiones) {
+			if(m.getIdMision() == id) {
+				misiones.remove(m);
+			}
+		}
 	}
 	
 

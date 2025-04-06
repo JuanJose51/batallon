@@ -1,5 +1,6 @@
 package Logica;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import Modelos.Vehiculo;
 import Modelos.EstadoOperativo;
@@ -13,6 +14,7 @@ public class Batallon {
 	private ArrayList<VehiculoBlindado> vehiculosBlindados=new ArrayList<VehiculoBlindado>();
 	private ArrayList<VehiculoDeApoyo> vehiculosDeApoyo= new ArrayList<VehiculoDeApoyo>();
 	private ArrayList<TransporteTropas> vehiculoDeTropas= new ArrayList<TransporteTropas>();
+	private ArrayList<Vehiculo> vehiculos=new ArrayList<Vehiculo>();
 	private ArrayList<Mision> misiones=new ArrayList<Mision>();
 	public Batallon(String nombre) {
 		super();
@@ -67,12 +69,123 @@ public class Batallon {
 			}
 		}return false;
 	}
-	public boolean agregarVehiculoDeApoyo(Vehiculo v) {
+	public boolean agregarVehiculoDeApoyo(VehiculoDeApoyo v) {
 		boolean estado =existeVehiculoBlindado(v.getId());
 		if(estado != true) {
-			this.vehiculosBlindados.add(v);
+			this.vehiculosDeApoyo.add(v);
 			return true;
 		}return false;
 	}
+	public VehiculoDeApoyo buscarVehiculoDeApoyo(String id) {
+		for(VehiculoDeApoyo v:this.vehiculosDeApoyo) {
+			if(v.getId().equals(id)) {
+				return v;
+			}
+		}return null;
+	}
+	public boolean eliminarVehiculoDeApoyo(String id) {
+		boolean estado =existeVehiculoDeApoyo(id);
+		if(estado != false) {
+			VehiculoDeApoyo v= buscarVehiculoDeApoyo(id);
+			this.vehiculosDeApoyo.remove(v);
+			return true;
+		}return false;
+	}
+//VEHICULO DE TRANSPORTE DE TROPAS//
+	public boolean existeVehiculoDeTransporte(String id) {
+		for(TransporteTropas t:this.vehiculoDeTropas) {
+			if(t.getId().equals(id)) {
+				return true;
+			}
+		}return false;
+	}
+	public boolean agregarVehiculodeTransporte(String id, String modelo, String yearFabricacion, int kilometraje, EstadoOperativo estadoOperativo,int capacidadTrasporteSoldados) {
+		boolean estado =existeVehiculoDeTransporte(id);
+		if(estado != true) {
+			TransporteTropas t=new TransporteTropas(id, modelo, yearFabricacion, kilometraje, estadoOperativo, capacidadTrasporteSoldados);
+			this.vehiculoDeTropas.add(t);
+			return true;
+		}return false;
+	}
+	public TransporteTropas buscarVehiculoTransporteTropas(String id) {
+		for(TransporteTropas t:this.vehiculoDeTropas) {
+			if(t.getId().equals(id)) {
+			   return t;
+			}
+		}return null;
+	}
+	public boolean eliminarVehiculoDeTransporteDeTropas(String id) {
+		boolean estado =existeVehiculoDeTransporte(id);
+		if(estado != false) {
+			TransporteTropas t=buscarVehiculoTransporteTropas(id);
+			this.vehiculoDeTropas.remove(t);
+			return true;
+		}return false;
+	}
+//METODOS DE  MISION//
+	public boolean existeMision(int id) {
+		for(Mision m:this.misiones) {
+			if(m.getIdMision() == id) {
+				return true;
+			}
+		}return false;
+	}
+	public boolean buscarVehiculo(String id) {
+		boolean estado1=existeVehiculoBlindado(id);
+		if(estado1 != false) {
+			return true;
+		}boolean estado2=existeVehiculoDeApoyo(id);
+		if(estado2 != false) {
+			return true;
+		}boolean estado3=existeVehiculoDeTransporte(id);
+		if(estado3 != false) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public Vehiculo buscarVehiculoEnGeneral(String id) {
+		for(Vehiculo m:this.vehiculos) {
+			if(m.getId().equals(id)) {
+				return m;
+			}
+		}return null;
+	}
+	public boolean agregarMision(LocalDate fecha, String ubicacion, ArrayList<String> personal,String idVehiculo) {
+		boolean estado =buscarVehiculo(idVehiculo);
+		if(estado != true) {
+			int idMision= this.misiones.size()+1;
+			Mision m=new Mision(fecha,ubicacion,personal,idVehiculo,idMision);
+			this.misiones.add(m);
+			Vehiculo v=buscarVehiculoEnGeneral(idVehiculo);
+			v.agregarMisionVehiculo(m);
+			return true;
+		}return false;
+	}
+	public Mision buscarMision(int id) {
+		for(Mision m:this.misiones) {
+			if(m.getIdMision()==id) {
+				return m;
+			}
+		}return null;
+	}
+	public boolean eliminarMision(int id) {
+		for(Mision m:this.misiones) {
+			if(m.getIdMision() ==id) {
+				this.misiones.remove(id);
+				Vehiculo v =buscarVehiculoEnGeneral(m.getIdVehiculo());
+				v.eliminarMisionVehiculo(id);
+				return true;
+			}
+		}return false;
+	}
+	public void actualizarMision(int id,LocalDate fecha, String ubicacion, ArrayList<String> personal,String idVehiculo) {
+		Mision m =buscarMision(id);
+		m.setFecha(fecha);
+		m.setUbicacion(ubicacion);
+		m.setPersonal(personal);
+		m.setIdVehiculo(idVehiculo);
+		
+	}	
 	
 }
