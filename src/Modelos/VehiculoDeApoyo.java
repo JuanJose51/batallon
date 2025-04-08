@@ -15,6 +15,14 @@ public class VehiculoDeApoyo extends Vehiculo {
 	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
+
+	@Override
+	public String toString() {
+		return "VehiculoDeApoyo [tipoVehiculo=" + tipoVehiculo + ", id=" + id + ", modelo=" + modelo
+				+ ", yearFabricacion=" + yearFabricacion + ", kilometraje=" + kilometraje + ", estadoOperativo="
+				+ estadoOperativo + ", misiones=" + misiones + "]";
+	}
+	
 	
 	
 
