@@ -15,6 +15,14 @@ public class TransporteTropas extends Vehiculo{
 	public void setCapacidadTrasporteSoldados(int capacidadTrasporteSoldados) {
 		this.capacidadTrasporteSoldados = capacidadTrasporteSoldados;
 	}
+
+	@Override
+	public String toString() {
+		return "TransporteTropas [capacidadTrasporteSoldados=" + capacidadTrasporteSoldados + ", id=" + id + ", modelo="
+				+ modelo + ", yearFabricacion=" + yearFabricacion + ", kilometraje=" + kilometraje
+				+ ", estadoOperativo=" + estadoOperativo + ", misiones=" + misiones + "]";
+	}
+	
 	
 	
 	

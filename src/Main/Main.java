@@ -233,9 +233,54 @@ public class Main {
 			}
 			break;
 		case 2:
+			String id2=JOptionPane.showInputDialog("ingrese el id del vehiculo blindado");
+			VehiculoDeApoyo vp=b.buscarVehiculoDeApoyo(id2);
+			if(vp !=null) {
+				vp.setEstadoOperativo( (EstadoOperativo) JOptionPane.showInputDialog(null,
+						"Seleccione el estado operativo del vehículo:", "Estado Operativo", JOptionPane.QUESTION_MESSAGE,
+						null, EstadoOperativo.values(), EstadoOperativo.DISPONIBLE));
+				boolean estado;
+				String id;
+				do {
+					id = JOptionPane.showInputDialog("ingrese un id para el vehiculo");
+					estado = b.existeVehiculoDeApoyo(id);
+				} while (estado != false);
+				vp.setId(id);
+				vp.setModelo( JOptionPane.showInputDialog("Ingrese el modelo del Vehiculo"));
+				vp.setYearFabricacion(JOptionPane.showInputDialog("ingrese el año de fabricación"));
+				vp.setKilometraje(Integer
+						.parseInt(JOptionPane.showInputDialog("ingrese el kilometrage del vehiculo en numeros enteros")));
+				vp.setTipoVehiculo(JOptionPane.showInputDialog("medico\n" + "Logistica\n" + "Comunicaciones\n"));
+				JOptionPane.showMessageDialog(null, "se actualizo con exito :)");
+			}else {
+				JOptionPane.showMessageDialog(null, "Error: no se encontro el id relacionado al vehiculo");
+			}
 			
 			break;
 		case 3:
+			String id3=JOptionPane.showInputDialog("ingrese el id del vehiculo blindado");
+			TransporteTropas vt=b.buscarVehiculoTransporteTropas(id3);
+			if(vt !=null) {
+				vt.setEstadoOperativo( (EstadoOperativo) JOptionPane.showInputDialog(null,
+						"Seleccione el estado operativo del vehículo:", "Estado Operativo", JOptionPane.QUESTION_MESSAGE,
+						null, EstadoOperativo.values(), EstadoOperativo.DISPONIBLE));
+				boolean estado;
+				String id;
+				do {
+					id = JOptionPane.showInputDialog("ingrese un id para el vehiculo");
+					estado = b.existeVehiculoDeTransporte(id);
+				} while (estado != false);
+				vt.setId(id);
+				vt.setModelo( JOptionPane.showInputDialog("Ingrese el modelo del Vehiculo"));
+				vt.setYearFabricacion(JOptionPane.showInputDialog("ingrese el año de fabricación"));
+				vt.setKilometraje(Integer
+						.parseInt(JOptionPane.showInputDialog("ingrese el kilometrage del vehiculo en numeros enteros")));
+				vt.setCapacidadTrasporteSoldados(Integer.parseInt(
+					JOptionPane.showInputDialog("Ingrese el numero de soldados que puede transportar el vehiculo")));
+				JOptionPane.showMessageDialog(null, "se actualizo con exito :)");
+			}else {
+				JOptionPane.showMessageDialog(null, "Error: no se encontro el id relacionado al vehiculo");
+			}
 			break; 
 		}
 	}
