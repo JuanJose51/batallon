@@ -44,6 +44,7 @@ public class Batallon {
 		boolean estado =existeVehiculoBlindado(v.getId());
 		if(estado != true) {
 			this.vehiculosBlindados.add(v);
+			this.vehiculos.add(v);
 			return true;
 		}return false;
 	}
@@ -58,6 +59,7 @@ public class Batallon {
 		 VehiculoBlindado v =buscarVehiculoBlindado(id);
 		if(v != null) {
 			this.vehiculosBlindados.remove(v);
+			this.vehiculos.remove(v);
 			return true;
 		}return false;
 	}
@@ -73,6 +75,7 @@ public class Batallon {
 		boolean estado =existeVehiculoBlindado(v.getId());
 		if(estado != true) {
 			this.vehiculosDeApoyo.add(v);
+			this.vehiculos.add(v);
 			return true;
 		}return false;
 	}
@@ -88,6 +91,7 @@ public class Batallon {
 		if(estado != false) {
 			VehiculoDeApoyo v= buscarVehiculoDeApoyo(id);
 			this.vehiculosDeApoyo.remove(v);
+			this.vehiculos.remove(v);
 			return true;
 		}return false;
 	}
@@ -104,6 +108,7 @@ public class Batallon {
 		if(estado != true) {
 			TransporteTropas t=new TransporteTropas(id, modelo, yearFabricacion, kilometraje, estadoOperativo, capacidadTrasporteSoldados);
 			this.vehiculoDeTropas.add(t);
+			this.vehiculos.add(t);
 			return true;
 		}return false;
 	}
@@ -119,6 +124,7 @@ public class Batallon {
 		if(estado != false) {
 			TransporteTropas t=buscarVehiculoTransporteTropas(id);
 			this.vehiculoDeTropas.remove(t);
+			this.vehiculos.remove(t);
 			return true;
 		}return false;
 	}
@@ -186,6 +192,7 @@ public class Batallon {
 		m.setPersonal(personal);
 		m.setIdVehiculo(idVehiculo);
 		
-	}	
+	}
+	
 	
 }

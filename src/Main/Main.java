@@ -1,10 +1,15 @@
 package Main;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import Logica.Batallon;
 import Modelos.EstadoOperativo;
+import Modelos.Mision;
 import Modelos.TransporteTropas;
+import Modelos.Vehiculo;
 import Modelos.VehiculoBlindado;
 import Modelos.VehiculoDeApoyo;
 
@@ -14,8 +19,6 @@ public class Main {
 	public static void main(String[] args) {
 		int opcion = 0;
 		String mensaje = "Ingrese una opción \n" + "1.Gestion de Vehiculos\n" + "2.Gestion de Misiones\n" + "3.salir";
-		String gestionMisiones = "Ingrese una Opción\n" + "1.Agregar Mision" + "2.buscar mision" + "3.Eliminar Mision"
-				+ "4.actualizar" + "5.atras";
 		while (opcion != 3) {
 			opcion = Integer.parseInt(JOptionPane.showInputDialog(mensaje));
 			switch (opcion) {
@@ -23,6 +26,7 @@ public class Main {
 				gestionVehiculo();
 				break;
 			case 2:
+				gestionMision();
 				break;
 			}
 		}
@@ -282,6 +286,105 @@ public class Main {
 				JOptionPane.showMessageDialog(null, "Error: no se encontro el id relacionado al vehiculo");
 			}
 			break; 
+		}
+	}
+	public static void gestionMision() {
+		int opc=0;
+		String gestionMisiones = "Ingrese una Opción\n" + "1.Agregar Mision\n" + "2.buscar mision\n" + "3.Eliminar Mision\n"
+				+ "4.actualiza\n" + "5.atras\n";
+		while(opc != 5) {
+			opc=Integer.parseInt(JOptionPane.showInputDialog(gestionMisiones));
+			switch(opc) {
+			case 1:
+				agregarMision();
+				break;
+			case 2:
+				buscarMision();
+				break;
+			case 3:
+				eliminarMision();
+				break;
+			case 4:
+				actualizarMision();
+				break;
+			}
+		}
+		
+	}
+	public static void agregarMision() {
+		String id=JOptionPane.showInputDialog("ingrese el id del vehiculo al cual se le va a asignar la mision");
+		boolean estado=b.buscarVehiculo(id);
+		if(estado != false) {
+			int mes=Integer.parseInt(JOptionPane.showInputDialog("ingrese el mes de la misión"));
+			int dia=Integer.parseInt(JOptionPane.showInputDialog("ingrese el día de la misión"));
+			int year=Integer.parseInt(JOptionPane.showInputDialog("ingrese el año de la misión"));
+			LocalDate fecha= LocalDate.of(year, mes, dia);
+			String ubicacion=JOptionPane.showInputDialog("ingrese la ubicacion de la misión");
+			int numSoldados=Integer.parseInt(JOptionPane.showInputDialog("ingrese el numero de soldados que van a estar en la misión"));
+			ArrayList<String> soldadosMision=new ArrayList<String>();
+			while(soldadosMision.size() < numSoldados) {
+				soldadosMision.add(JOptionPane.showInputDialog("ingrese el nombre del soldado"+soldadosMision.size()+"que va a participar en la misión"));
+			}
+			b.agregarMision(fecha, ubicacion, soldadosMision, id);
+			JOptionPane.showMessageDialog(null,"Se agrego con exito :)\n el id de la mision es"+b.getMisiones().size()+1);
+		}else {
+			JOptionPane.showMessageDialog(null,"Error:no se agrego con exito :(\n verifique que el id del vehiculo sea correcto");
+		}
+	}
+	public static void buscarMision() {
+		int id=Integer.parseInt(JOptionPane.showInputDialog("ingrese el id de la misión"));
+		Mision m=b.buscarMision(id);
+		if(m!=null) {
+			JOptionPane.showMessageDialog(null,"Informacion misión\n"+m.toString());
+
+		}else {
+			JOptionPane.showMessageDialog(null,"Error:no se encontro id relacionado");
+		}
+	}
+	public static void eliminarMision() {
+		int id=Integer.parseInt(JOptionPane.showInputDialog("ingrese el id de la misión"));
+		Mision m=b.buscarMision(id);
+		if(m!=null) {
+			b.eliminarMision(id);
+			JOptionPane.showMessageDialog(null,"se elimino con exito :)");
+
+		}else {
+			JOptionPane.showMessageDialog(null,"Error:no se encontro id relacionado a la misión");
+		}
+	}
+
+	public static void actualizarMision() {
+		int id = Integer.parseInt(JOptionPane.showInputDialog("ingrese el id de la mision"));
+		boolean estado = b.existeMision(id);
+		if (estado != false) {
+			Mision m = b.buscarMision(id);
+			String idVehiculo = JOptionPane
+					.showInputDialog("ingrese el id del vehiculo al cual se le va a asignar la mision");
+			boolean estadoVehiculo = b.buscarVehiculo(idVehiculo);
+			if (estadoVehiculo != false) {
+				m.setIdVehiculo(idVehiculo);
+				int mes = Integer.parseInt(JOptionPane.showInputDialog("ingrese el mes de la misión"));
+				int dia = Integer.parseInt(JOptionPane.showInputDialog("ingrese el día de la misión"));
+				int year = Integer.parseInt(JOptionPane.showInputDialog("ingrese el año de la misión"));
+				LocalDate fecha = LocalDate.of(year, mes, dia);
+				m.setFecha(fecha);
+				m.setUbicacion(JOptionPane.showInputDialog("ingrese la ubicacion de la misión"));
+				int numSoldados = Integer.parseInt(
+						JOptionPane.showInputDialog("ingrese el numero de soldados que van a estar en la misión"));
+				ArrayList<String> soldadosMision = new ArrayList<String>();
+				while (soldadosMision.size() < numSoldados) {
+					soldadosMision.add(JOptionPane.showInputDialog("ingrese el nombre del soldado"
+							+ soldadosMision.size() + "que va a participar en la misión"));
+				}
+				m.setPersonal(soldadosMision);
+				JOptionPane.showMessageDialog(null, "se actualizo con exito :)");
+
+			} else {
+				JOptionPane.showMessageDialog(null, "Error el id no se encontro");
+
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Error el id de la mision no se encontro");
 		}
 	}
 
