@@ -9,7 +9,6 @@ import Logica.Batallon;
 import Modelos.EstadoOperativo;
 import Modelos.Mision;
 import Modelos.TransporteTropas;
-import Modelos.Vehiculo;
 import Modelos.VehiculoBlindado;
 import Modelos.VehiculoDeApoyo;
 
@@ -36,8 +35,8 @@ public class Main {
 	public static void gestionVehiculo() {
 		int opcion = 0;
 		String mensajeGestionVehiculo = "Ingrese una opción\n" + "1.Agregar Vehiculo\n" + "2.Buscar Vehiculo\n"
-				+ "3.Eliminar Vehiculo\n" + "4.Actualizar Vehiculo\n" + "5.atras";
-		while (opcion != 5) {
+				+ "3.Eliminar Vehiculo\n" + "4.Actualizar Vehiculo\n" +"5.kilometraje promedio"+"6.vehiculo con más misiones"+"7.atras";
+		while (opcion != 7) {
 			opcion = Integer.parseInt(JOptionPane.showInputDialog(mensajeGestionVehiculo));
 			switch (opcion) {
 			case 1:
@@ -51,6 +50,12 @@ public class Main {
 				break;
 			case 4:
 				actualizarVehiculo();
+				break;
+			case 5:
+				kilometrajePromedio();
+				break;
+			case 6:
+				JOptionPane.showMessageDialog(null,"el vehiculo con más misiones es"+b.vehiculoConMasMisiones().toString());
 				break;
 
 			}
@@ -135,7 +140,6 @@ public class Main {
 			}
 		}
 	}
-
 	public static void eliminarVehiculo() {
 		int tipoVehiculo = Integer
 				.parseInt(JOptionPane.showInputDialog("ingrese el numero de la opcion del tipo de vehiculo a elinar\n"
@@ -173,7 +177,7 @@ public class Main {
 	}
 	public static void buscarVehiculo() {
 		int tipoVehiculo = Integer
-				.parseInt(JOptionPane.showInputDialog("ingrese el numero de la opcion del tipo de vehiculo a elinar\n"
+				.parseInt(JOptionPane.showInputDialog("ingrese el numero de la opcion del tipo de vehiculo a buscar\n"
 						+ "1.Vehiculo Blindado\n" + "2.Vehiculo de apoyo\n" + "3.Vehiculo de tansporte de tropas"));
 		switch (tipoVehiculo) {
 		case 1:
@@ -291,7 +295,7 @@ public class Main {
 	public static void gestionMision() {
 		int opc=0;
 		String gestionMisiones = "Ingrese una Opción\n" + "1.Agregar Mision\n" + "2.buscar mision\n" + "3.Eliminar Mision\n"
-				+ "4.actualiza\n" + "5.atras\n";
+				+ "4.actualiza\n" +"5.buscar midion por fecha y ubicación"+ "6.atras\n";
 		while(opc != 5) {
 			opc=Integer.parseInt(JOptionPane.showInputDialog(gestionMisiones));
 			switch(opc) {
@@ -306,6 +310,9 @@ public class Main {
 				break;
 			case 4:
 				actualizarMision();
+				break;
+			case 5:
+				buscarMisionPorFechaYUbicacion();
 				break;
 			}
 		}
@@ -352,7 +359,6 @@ public class Main {
 			JOptionPane.showMessageDialog(null,"Error:no se encontro id relacionado a la misión");
 		}
 	}
-
 	public static void actualizarMision() {
 		int id = Integer.parseInt(JOptionPane.showInputDialog("ingrese el id de la mision"));
 		boolean estado = b.existeMision(id);
@@ -385,6 +391,36 @@ public class Main {
 			}
 		}else {
 			JOptionPane.showMessageDialog(null, "Error el id de la mision no se encontro");
+		}
+	}
+	public static void buscarMisionPorFechaYUbicacion() {
+		int mes=Integer.parseInt(JOptionPane.showInputDialog("ingrese el mes de la misión"));
+		int dia=Integer.parseInt(JOptionPane.showInputDialog("ingrese el día de la misión"));
+		int year=Integer.parseInt(JOptionPane.showInputDialog("ingrese el año de la misión"));
+		LocalDate fecha= LocalDate.of(year, mes, dia);
+		String ubicacion=JOptionPane.showInputDialog("ingrese la ubicacion de la misión");
+		Mision m=b.buscarMisionPorFechaYUbicacion(fecha, ubicacion);
+		if(m != null) {
+			JOptionPane.showMessageDialog(null,"Informacion misión\n"+m.toString());
+
+		}else {
+			JOptionPane.showMessageDialog(null,"Error:no se encontro un mision relacionado");
+		}
+	}
+	public static void kilometrajePromedio() {
+		int tipoVehiculo = Integer
+				.parseInt(JOptionPane.showInputDialog("ingrese el numero de la opcion del tipo de vehiculo a buscar\n"
+						+ "1.Vehiculo Blindado\n" + "2.Vehiculo de apoyo\n" + "3.Vehiculo de tansporte de tropas"));
+		switch (tipoVehiculo) {
+		case 1:
+			JOptionPane.showMessageDialog(null,"el promedio de los blindados es de"+b.kilometrajePromedioVehiculoBlindados());
+			break;
+		case 2:
+			JOptionPane.showMessageDialog(null,"el promedio de los blindados es de"+b.kilometrajePromedioVehiculoApoyo());
+			break;
+		case 3:
+			JOptionPane.showMessageDialog(null,"el promedio de los blindados es de"+b.kilometrajePromedioVehiculoTransporte());
+			break;
 		}
 	}
 

@@ -63,6 +63,12 @@ public class Batallon {
 			return true;
 		}return false;
 	}
+	public int kilometrajePromedioVehiculoBlindados() {
+		int contador=0;
+		for(VehiculoBlindado b:this.vehiculosBlindados) {
+			contador+=b.getKilometraje();
+		}return contador/vehiculoDeTropas.size();
+	}
 //METODOS DE VEHICULO DE APOYO//
 	public boolean existeVehiculoDeApoyo(String id) {
 		for(VehiculoDeApoyo v:this.vehiculosDeApoyo) {
@@ -94,6 +100,12 @@ public class Batallon {
 			this.vehiculos.remove(v);
 			return true;
 		}return false;
+	}
+	public int kilometrajePromedioVehiculoApoyo() {
+		int contador=0;
+		for(VehiculoDeApoyo p:this.vehiculosDeApoyo) {
+			contador+=p.getKilometraje();
+		}return contador/vehiculoDeTropas.size();
 	}
 //VEHICULO DE TRANSPORTE DE TROPAS//
 	public boolean existeVehiculoDeTransporte(String id) {
@@ -127,6 +139,13 @@ public class Batallon {
 			this.vehiculos.remove(t);
 			return true;
 		}return false;
+	}
+	public int kilometrajePromedioVehiculoTransporte() {
+		int contador=0;
+		
+		for(TransporteTropas t:this.vehiculoDeTropas) {
+			contador+=t.getKilometraje();
+		}return contador/vehiculoDeTropas.size();
 	}
 //METODOS DE  MISION//
 	public boolean existeMision(int id) {
@@ -192,6 +211,36 @@ public class Batallon {
 		m.setPersonal(personal);
 		m.setIdVehiculo(idVehiculo);
 		
+	}
+	public Mision buscarMisionPorFechaYUbicacion(LocalDate facha,String ubicacion) {
+		for(Mision m:this.misiones) {
+			if(m.getFecha().equals(facha) &&m.getUbicacion().equalsIgnoreCase(ubicacion)) {
+				return m;
+			}
+		}return null;
+	}
+	public Vehiculo vehiculoConMasMisiones() {
+		int mayorCantidadMisiones=0;
+		Vehiculo v=null;
+		for(VehiculoBlindado vb :this.vehiculosBlindados) {
+			if(vb.getMisiones().size()>mayorCantidadMisiones) {
+				v=vb;
+				mayorCantidadMisiones =vb.getMisiones().size();
+			}
+		}
+		for(VehiculoDeApoyo vp :this.vehiculosDeApoyo) {
+			if(vp.getMisiones().size()>mayorCantidadMisiones) {
+				v=vp;
+				mayorCantidadMisiones =vp.getMisiones().size();
+			}
+		}
+		for(TransporteTropas vt :this.vehiculoDeTropas) {
+			if(vt.getMisiones().size()>mayorCantidadMisiones) {
+				v=vt;
+				mayorCantidadMisiones =vt.getMisiones().size();
+			}
+		}
+		return v;
 	}
 	
 	
