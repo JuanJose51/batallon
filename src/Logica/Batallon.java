@@ -8,6 +8,9 @@ import Modelos.Mision;
 import Modelos.TransporteTropas;
 import Modelos.VehiculoBlindado;
 import Modelos.VehiculoDeApoyo;
+import Modelos.Soldado;
+import Modelos.Rango;
+import Modelos.FuncionSoldado;
 
 public class Batallon {
 	private String nombre;
@@ -16,6 +19,7 @@ public class Batallon {
 	private ArrayList<TransporteTropas> vehiculoDeTropas= new ArrayList<TransporteTropas>();
 	private ArrayList<Vehiculo> vehiculos=new ArrayList<Vehiculo>();
 	private ArrayList<Mision> misiones=new ArrayList<Mision>();
+	private ArrayList<Soldado> soldados= new ArrayList<Soldado>();
 	public Batallon(String nombre) {
 		super();
 		this.nombre = nombre;
@@ -176,20 +180,20 @@ public class Batallon {
 			}
 		}return null;
 	}
-	public boolean agregarMision(LocalDate fecha, String ubicacion, ArrayList<String> personal,String idVehiculo) {
+	public boolean agregarMision(LocalDate fecha, String ubicacion,String idVehiculo,int idMision) {
 		boolean estado =buscarVehiculo(idVehiculo);
-		if(estado != true) {
-			int idMision= this.misiones.size()+1;
-			Mision m=new Mision(fecha,ubicacion,personal,idVehiculo,idMision);
-			this.misiones.add(m);
+		if(estado != false) {
+			Mision m=new Mision(fecha,ubicacion,idVehiculo,idMision);
+			misiones.add(m);
 			Vehiculo v=buscarVehiculoEnGeneral(idVehiculo);
 			v.agregarMisionVehiculo(m);
 			return true;
 		}return false;
 	}
 	public Mision buscarMision(int id) {
-		for(Mision m:this.misiones) {
-			if(m.getIdMision()==id) {
+		for(Mision m:misiones) {
+			int idMision=m.getIdMision();
+			if(idMision==id) {
 				return m;
 			}
 		}return null;
@@ -204,11 +208,10 @@ public class Batallon {
 			}
 		}return false;
 	}
-	public void actualizarMision(int id,LocalDate fecha, String ubicacion, ArrayList<String> personal,String idVehiculo) {
+	public void actualizarMision(int id,LocalDate fecha, String ubicacion,String idVehiculo) {
 		Mision m =buscarMision(id);
 		m.setFecha(fecha);
 		m.setUbicacion(ubicacion);
-		m.setPersonal(personal);
 		m.setIdVehiculo(idVehiculo);
 		
 	}
@@ -242,6 +245,86 @@ public class Batallon {
 		}
 		return v;
 	}
-	
+//METODOS DE SOLDADOS//
+	public boolean existeSoldado(String id) {
+		for(Soldado s:this.soldados) {
+			if(s.getId().equals(id)) {
+				return true;
+			}
+		}return false;
+	}
+	public boolean agregarSoldado(String id,String nombreCompleto,Rango rango,FuncionSoldado funcion,int edad) {
+		Soldado s=new Soldado(id, nombreCompleto, rango, funcion, edad);
+		boolean estado =existeSoldado(id);
+		if(estado!=true) {
+		   soldados.add(s);
+		   s.asignarMison();
+		   return true;
+		}return false;
+	}
+	public boolean eliminarSoldado(String id) {
+		for(Soldado s:this.soldados) {
+			if(s.getId().equals(id)) {
+				soldados.remove(s);
+				eliminarSoldadoEnMisioneInbolucrado(id);
+				return true;
+			}
+		}return false;
+	}
+	public Soldado buscarSoldado(String idSoldado) {
+		for(Soldado s:this.soldados) {
+			if(s.getId().equals(idSoldado)) {
+				soldados.remove(s);
+				return s;
+			}
+		}return null;
+	}
+	public boolean agregarSoldadoAMision(int idMision,String id) {
+		Soldado soldado=buscarSoldado(id);
+		Mision mision=buscarMision(idMision);
+		if(soldado != null&& mision != null) {
+			mision.agregarSoldadoAMision(soldado);
+			return true;
+		}return false;
+	}
+	public void eliminarSoldadoEnMisioneInbolucrado(String idSoldado) {
+		Soldado s =buscarSoldado(idSoldado);
+		if(s!=null) {
+			for(Mision m:this.misiones) {
+				for(Soldado soldado:m.getPersonal()) {
+					if(soldado.getId().equals(idSoldado)) {
+						m.getPersonal().remove(s);
+					}
+				}
+			}
+		}
+	}
+	  public ArrayList<Soldado> buscarSoldadosPorFuncion(FuncionSoldado funcion) {
+	        ArrayList<Soldado> resultado = new ArrayList<Soldado>();
+	        for (Soldado s : soldados) { 
+	            if (s.getFuncion().equals(funcion)) {
+	                resultado.add(s);
+	            }
+	        }
+	        return resultado;
+	  }
+	  public ArrayList<Soldado> soldadoDisponiblePorRango(Rango rango){
+		  ArrayList<Soldado> listaSoldados=new ArrayList<Soldado>();
+		  for(Soldado s:soldados) {
+			  if(s.getRango().equals(rango)&&s.isDisponible()==true) {
+				  listaSoldados.add(s);
+			  }
+		  }return listaSoldados;
+	  }
+	  public int calcularEdadPromedioPersonal() {
+		  int edad=0;
+		  for(Soldado s:soldados) {
+			  edad+=s.getEdadSoldado();
+		  }if(edad!=0) {
+			  return edad/soldados.size();
+		  }return -1;
+		  
+	  }
+	  
 	
 }

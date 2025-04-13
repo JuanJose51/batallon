@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-
 import Logica.Batallon;
 import Modelos.EstadoOperativo;
+import Modelos.FuncionSoldado;
 import Modelos.Mision;
+import Modelos.Rango;
+import Modelos.Soldado;
 import Modelos.TransporteTropas;
 import Modelos.VehiculoBlindado;
 import Modelos.VehiculoDeApoyo;
@@ -17,8 +19,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		int opcion = 0;
-		String mensaje = "Ingrese una opción \n" + "1.Gestion de Vehiculos\n" + "2.Gestion de Misiones\n" + "3.salir";
-		while (opcion != 3) {
+		String mensaje = "Ingrese una opción \n" + "1.Gestion de Vehiculos\n" + "2.Gestion de Misiones\n" + "3.gestion De Soldado\n"+"4.salir";
+		while (opcion != 4) {
 			opcion = Integer.parseInt(JOptionPane.showInputDialog(mensaje));
 			switch (opcion) {
 			case 1:
@@ -26,6 +28,9 @@ public class Main {
 				break;
 			case 2:
 				gestionMision();
+				break;
+			case 3:
+				gestionSoldado();
 				break;
 			}
 		}
@@ -35,7 +40,7 @@ public class Main {
 	public static void gestionVehiculo() {
 		int opcion = 0;
 		String mensajeGestionVehiculo = "Ingrese una opción\n" + "1.Agregar Vehiculo\n" + "2.Buscar Vehiculo\n"
-				+ "3.Eliminar Vehiculo\n" + "4.Actualizar Vehiculo\n" +"5.kilometraje promedio"+"6.vehiculo con más misiones"+"7.atras";
+				+ "3.Eliminar Vehiculo\n" + "4.Actualizar Vehiculo\n" +"5.kilometraje promedio\n"+"6.vehiculo con más misiones\n"+"7.atras";
 		while (opcion != 7) {
 			opcion = Integer.parseInt(JOptionPane.showInputDialog(mensajeGestionVehiculo));
 			switch (opcion) {
@@ -295,8 +300,8 @@ public class Main {
 	public static void gestionMision() {
 		int opc=0;
 		String gestionMisiones = "Ingrese una Opción\n" + "1.Agregar Mision\n" + "2.buscar mision\n" + "3.Eliminar Mision\n"
-				+ "4.actualiza\n" +"5.buscar midion por fecha y ubicación"+ "6.atras\n";
-		while(opc != 5) {
+				+ "4.actualiza\n" +"5.buscar midion por fecha y ubicación\n"+ "6.atras\n";
+		while(opc != 6) {
 			opc=Integer.parseInt(JOptionPane.showInputDialog(gestionMisiones));
 			switch(opc) {
 			case 1:
@@ -327,13 +332,15 @@ public class Main {
 			int year=Integer.parseInt(JOptionPane.showInputDialog("ingrese el año de la misión"));
 			LocalDate fecha= LocalDate.of(year, mes, dia);
 			String ubicacion=JOptionPane.showInputDialog("ingrese la ubicacion de la misión");
-			int numSoldados=Integer.parseInt(JOptionPane.showInputDialog("ingrese el numero de soldados que van a estar en la misión"));
-			ArrayList<String> soldadosMision=new ArrayList<String>();
-			while(soldadosMision.size() < numSoldados) {
-				soldadosMision.add(JOptionPane.showInputDialog("ingrese el nombre del soldado"+soldadosMision.size()+"que va a participar en la misión"));
+			int idMision=b.getMisiones().size()+1;
+			boolean m =b.agregarMision(fecha, ubicacion, id,idMision);
+			if(m==true) {
+				JOptionPane.showMessageDialog(null,"Se agrego con exito :");
+			}else {
+				JOptionPane.showMessageDialog(null,"no se agrego");
 			}
-			b.agregarMision(fecha, ubicacion, soldadosMision, id);
-			JOptionPane.showMessageDialog(null,"Se agrego con exito :)\n el id de la mision es"+b.getMisiones().size()+1);
+			
+			JOptionPane.showMessageDialog(null,"Se agrego con exito :)\n el id de la mision es "+idMision);
 		}else {
 			JOptionPane.showMessageDialog(null,"Error:no se agrego con exito :(\n verifique que el id del vehiculo sea correcto");
 		}
@@ -375,14 +382,6 @@ public class Main {
 				LocalDate fecha = LocalDate.of(year, mes, dia);
 				m.setFecha(fecha);
 				m.setUbicacion(JOptionPane.showInputDialog("ingrese la ubicacion de la misión"));
-				int numSoldados = Integer.parseInt(
-						JOptionPane.showInputDialog("ingrese el numero de soldados que van a estar en la misión"));
-				ArrayList<String> soldadosMision = new ArrayList<String>();
-				while (soldadosMision.size() < numSoldados) {
-					soldadosMision.add(JOptionPane.showInputDialog("ingrese el nombre del soldado"
-							+ soldadosMision.size() + "que va a participar en la misión"));
-				}
-				m.setPersonal(soldadosMision);
 				JOptionPane.showMessageDialog(null, "se actualizo con exito :)");
 
 			} else {
@@ -424,4 +423,164 @@ public class Main {
 		}
 	}
 
+	public static void gestionSoldado() {
+		int opcion = 0;
+		String mensaje = "Ingrese una opción\n" + "1.agregar soldado\n" + "2.eliminar soldado\n" + "3.buscar soldado por id\n"
+				+ "4.actualizar soldado\n" + "5.liberar soldados en misiones terminadas\n"
+				+ "6.obtener soldados disponibles por rango\n" + "7.edad promedio personal\n"
+				+ "8.Buscar soldados por especialidad\n"+"9.atras";
+		while(opcion!=9) {
+			opcion =Integer.parseInt(JOptionPane.showInputDialog(mensaje));
+			switch(opcion) {
+			case 1:
+				agregarSoldado();
+				break;
+			case 2:
+				eliminarSoldado();
+				break;
+			case 3:
+				buscarSoldadoPorId();
+				break;
+			case 4:
+				actualizarSoldado();
+				break;
+			case 5:
+				liberarSoldadosDeMisionesFinalizadas();
+				break;
+			case 6:
+				obtenerSoldadosDisponiblePorRango();
+				break;
+			case 7:
+				edadPromedioPersonal();
+				break;
+			case 8:
+				buscarSoldadoPorEspecialidad();
+				break;
+			}
+		}
+	}
+	public static void agregarSoldado() {
+		boolean estado;
+		String idSoldado;
+		do {
+		idSoldado =JOptionPane.showInputDialog("ingrese el id del soldado");
+		estado=b.existeSoldado(idSoldado);
+		if(estado != false) {
+			JOptionPane.showMessageDialog(null, "este id ya existe ingrese otro :)");
+		}
+		}while(estado != false);
+		String nombre=JOptionPane.showInputDialog("ingrse el nombre del soldado");
+		Rango[] opciones = Rango.values();
+		Rango rangoSeleccionado = (Rango) JOptionPane.showInputDialog(
+	            null,
+	            "Selecciona un rango:",
+	            "Elegir Rango",
+	            JOptionPane.QUESTION_MESSAGE,
+	            null,
+	            opciones,
+	            opciones[0] // opción por defecto
+	        );
+		FuncionSoldado[] funcionOpc =FuncionSoldado.values();
+		FuncionSoldado funcion=(FuncionSoldado) JOptionPane.showInputDialog(null,"seleccionar un funcion" , "elegir funcion",JOptionPane.QUESTION_MESSAGE, null, funcionOpc, funcionOpc[0]);
+		int edad=Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad del sooldado"));
+		b.agregarSoldado(idSoldado, nombre, rangoSeleccionado, funcion, edad);
+		JOptionPane.showMessageDialog(null, "Se agrego con exio");
+	}
+	public static void eliminarSoldado() {
+		String id =JOptionPane.showInputDialog("ingrese el id del soldado a eliminar");
+		boolean estado =b.eliminarSoldado(id);
+		if(estado !=false) {
+			JOptionPane.showMessageDialog(null, "Se eelimino el soldado con exito");
+		}else {
+			JOptionPane.showMessageDialog(null,"Error: verifique que el id sea correcto" );
+		}
+	}
+    public static void buscarSoldadoPorId() {
+    	String id =JOptionPane.showInputDialog("ingrese el id de un soldado");
+    	Soldado s=b.buscarSoldado(id);
+    	if(s!=null) {
+    		JOptionPane.showMessageDialog(null, s.toString());
+    	}else {
+    		JOptionPane.showMessageDialog(null, "Error:verifique que el id sea correcto");
+    	}
+    }
+    public static void actualizarSoldado() {
+    	String id=JOptionPane.showInputDialog("ingrese el id del soldado");
+    	Soldado soldado=b.buscarSoldado(id);
+    	if(soldado != null) {
+    		soldado.setId(JOptionPane.showInputDialog("ingrese un id"));
+    		soldado.setNombreCompleto(JOptionPane.showInputDialog("ingrese el nombre completo  del soldado"));
+    		soldado.setEdadSoldado(Integer.parseInt(JOptionPane.showInputDialog("ingrese la edad en enteros")));
+    		Rango[] opciones = Rango.values();
+    		Rango rangoSeleccionado = (Rango) JOptionPane.showInputDialog(
+    	            null,
+    	            "Selecciona un rango:",
+    	            "Elegir Rango",
+    	            JOptionPane.QUESTION_MESSAGE,
+    	            null,
+    	            opciones,
+    	            opciones[0] // opción por defecto
+    	        );
+    		soldado.setRango(rangoSeleccionado);
+    		FuncionSoldado[] funcionOpc =FuncionSoldado.values();
+    		FuncionSoldado funcion=(FuncionSoldado) JOptionPane.showInputDialog(null,"seleccionar un funcion" , "elegir funcion",JOptionPane.QUESTION_MESSAGE, null, funcionOpc, funcionOpc[0]);
+    		soldado.setFuncion(funcion);
+    		JOptionPane.showMessageDialog(null,"Se actualizo con exito");
+    		
+    	}else {
+    		JOptionPane.showMessageDialog(null,"Error: no se encontro el id");
+    	}
+    	
+    }
+    public static void obtenerSoldadosDisponiblePorRango() {
+    	Rango[] opciones = Rango.values();
+		Rango rangoSeleccionado = (Rango) JOptionPane.showInputDialog(
+	            null,
+	            "Selecciona un rango:",
+	            "Elegir Rango",
+	            JOptionPane.QUESTION_MESSAGE,
+	            null,
+	            opciones,
+	            opciones[0] // opción por defecto
+	        );
+		ArrayList<Soldado> soldados=b.soldadoDisponiblePorRango(rangoSeleccionado);
+    	String mensaje="";
+    	int n=1;
+    	for(Soldado s:soldados) {
+    		mensaje+=n+"."+s.toString()+"\n";
+    		n++;
+    	}
+    	JOptionPane.showMessageDialog(null, mensaje);
+    }
+    public static void edadPromedioPersonal() {
+    	int edadPromedio=b.calcularEdadPromedioPersonal();
+    	if(edadPromedio != -1) {
+    		JOptionPane.showMessageDialog(null,"la edad promedio de el personal es de "+edadPromedio);
+    	}else {
+    		JOptionPane.showMessageDialog(null,"No hay personal agregado");
+    	}
+    }
+    public static void buscarSoldadoPorEspecialidad() {
+    	FuncionSoldado[] opciones = FuncionSoldado.values();
+		FuncionSoldado funcion = (FuncionSoldado) JOptionPane.showInputDialog(
+	            null,
+	            "Selecciona un rango:",
+	            "Elegir Rango",
+	            JOptionPane.QUESTION_MESSAGE,
+	            null,
+	            opciones,
+	            opciones[0]
+	        );
+		ArrayList<Soldado> soldados=b.buscarSoldadosPorFuncion(funcion);
+    	String mensaje="";
+    	int n=1;
+    	for(Soldado s:soldados) {
+    		mensaje+=n+"."+s.toString()+"\n";
+    		n++;
+    	}
+    	JOptionPane.showMessageDialog(null, mensaje);
+    }
+    public static void liberarSoldadosDeMisionesFinalizadas() {
+    	
+    }
 }

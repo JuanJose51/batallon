@@ -7,13 +7,12 @@ public class Mision {
 	private  int idMision;
 	private LocalDate fecha;
 	private String ubicacion;
-	private ArrayList<String> personal=new ArrayList<String>();
+	private ArrayList<Soldado> personal=new ArrayList<Soldado>();
 	private String idVehiculo;
-	public Mision(LocalDate fecha, String ubicacion, ArrayList<String> personal,String idVehiculo,int idMision) {
+	public Mision(LocalDate fecha, String ubicacion,String idVehiculo,int idMision) {
 		super();
 		this.fecha = fecha;
 		this.ubicacion = ubicacion;
-		this.personal = personal;
 		this.idVehiculo = idVehiculo;
 		this.idMision= idMision;
 	}
@@ -35,10 +34,10 @@ public class Mision {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	public ArrayList<String> getPersonal() {
+	public ArrayList<Soldado> getPersonal() {
 		return personal;
 	}
-	public void setPersonal(ArrayList<String> personal) {
+	public void setPersonal(ArrayList<Soldado> personal) {
 		this.personal = personal;
 	}
 
@@ -48,11 +47,16 @@ public class Mision {
 	public void setIdVehiculo(String idVehiculo) {
 		this.idVehiculo = idVehiculo;
 	}
+
+	public void agregarSoldadoAMision(Soldado s) {
+		personal.add(s);
+	}
 	@Override
 	public String toString() {
-		return "Mision [fecha=" + fecha + ", ubicacion=" + ubicacion + ", personal=" + personal + ",id del vehiculo en uso"
-				+ idVehiculo + "]";
+		return "Mision [idMision=" + idMision + ", fecha=" + fecha + ", ubicacion=" + ubicacion + ", personal="
+				+ personal + ", idVehiculo=" + idVehiculo + "]";
 	}
+	
 	
 	
 
